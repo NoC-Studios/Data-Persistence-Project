@@ -14,16 +14,17 @@ public class MainManager : MonoBehaviour
     public Text BestScoreText;
     public GameObject GameOverText;
     
-    private bool m_Started = false;
-    private int m_Points;
+    private bool m_started = false;
+    private int m_points;
     
-    private bool m_GameOver = false;
+    private bool m_gameOver = false;
 
     
     // Start is called before the first frame update
     void Start()
     {
-        AddPoint(0);
+        AddPoint(0); // no score points added, this is to update name in score string to use persisted name.
+
         BestScoreText.text = DataManager.Instance.BestScore.ToString();
 
         const float step = 0.6f;
@@ -37,18 +38,18 @@ public class MainManager : MonoBehaviour
                 Vector3 position = new Vector3(-1.5f + step * x, 2.5f + i * 0.3f, 0);
                 var brick = Instantiate(BrickPrefab, position, Quaternion.identity);
                 brick.PointValue = pointCountArray[i];
-                brick.onDestroyed.AddListener(AddPoint);
+                brick.OnDestroyed.AddListener(AddPoint);
             }
         }
     }
 
     private void Update()
     {
-        if (!m_Started)
+        if (!m_started)
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                m_Started = true;
+                m_started = true;
                 float randomDirection = Random.Range(-1.0f, 1.0f);
                 Vector3 forceDir = new Vector3(randomDirection, 1, 0);
                 forceDir.Normalize();
@@ -57,7 +58,7 @@ public class MainManager : MonoBehaviour
                 Ball.AddForce(forceDir * 2.0f, ForceMode.VelocityChange);
             }
         }
-        else if (m_GameOver)
+        else if (m_gameOver)
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
@@ -72,19 +73,19 @@ public class MainManager : MonoBehaviour
 
     void AddPoint(int point)
     {
-        m_Points += point;
-        ScoreText.text = $"{DataManager.Instance.Name} Score : {m_Points}";
+        m_points += point;
+        ScoreText.text = $"{DataManager.Instance.Name} Score : {m_points}";
     }
 
     public void GameOver()
     {
-        m_GameOver = true;
+        m_gameOver = true;
         GameOverText.SetActive(true);
 
-        if (m_Points > DataManager.Instance.BestScore.Score)
+        if (m_points > DataManager.Instance.BestScore.Score)
         {
             DataManager.Instance.BestScore.Name = DataManager.Instance.Name;
-            DataManager.Instance.BestScore.Score = m_Points;
+            DataManager.Instance.BestScore.Score = m_points;
             DataManager.Instance.SaveBestScore();
         }
     }

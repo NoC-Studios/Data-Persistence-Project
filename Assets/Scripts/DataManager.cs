@@ -9,6 +9,12 @@ public class DataManager : MonoBehaviour
     public string Name;
     public BestScoreData BestScore;
 
+    /// <summary>
+    /// Name of the file to save persistent information to.
+    /// </summary>
+    /// <remarks>
+    /// The folder delimiter is prepended to the name as well.
+    /// </remarks>
     private string m_persistentFileName = "/persistentData.json";
 
     void Awake()
@@ -25,6 +31,9 @@ public class DataManager : MonoBehaviour
         LoadBestScore();
     }
 
+    /// <summary>
+    /// Data to persist between scenes and sessions.
+    /// </summary>
     [Serializable]
     class PersistentData
     {
@@ -32,6 +41,12 @@ public class DataManager : MonoBehaviour
         public BestScoreData BestScore;
     }
 
+    /// <summary>
+    /// Used to persist the best or "high" score.
+    /// </summary>
+    /// <remarks>
+    /// Stores name and score.
+    /// </remarks>
     [Serializable]
     public struct BestScoreData
     {
