@@ -47,7 +47,7 @@ public class MenuUIHandler : MonoBehaviour
         }
 
         DataManager.Instance.Name = m_nameInput.text;
-        DataManager.Instance.SaveName();
+        DataManager.Instance.SaveData();
 
         SceneManager.LoadScene(k_mainSceneIndex);
     }

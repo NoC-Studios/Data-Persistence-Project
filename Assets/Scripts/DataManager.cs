@@ -27,8 +27,7 @@ public class DataManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
-        LoadName();
-        LoadBestScore();
+        LoadData();
     }
 
     /// <summary>
@@ -66,16 +65,16 @@ public class DataManager : MonoBehaviour
         }
     }
 
-    public void SaveName()
+    public void SaveData()
     {
         PersistentData data = new PersistentData();
         data.Name = Name;
-
+        data.BestScore = BestScore;
         string json = JsonUtility.ToJson(data);
         File.WriteAllText(Application.persistentDataPath + m_persistentFileName, json);
     }
 
-    public void LoadName()
+    public void LoadData()
     {
         if (File.Exists(Application.persistentDataPath + m_persistentFileName))
         {
@@ -83,25 +82,6 @@ public class DataManager : MonoBehaviour
             PersistentData data = JsonUtility.FromJson<PersistentData>(json);
 
             Name = data.Name;
-        }
-    }
-
-    public void SaveBestScore()
-    {
-        PersistentData data = new PersistentData();
-        data.BestScore = BestScore;
-
-        string json = JsonUtility.ToJson(data);
-        File.WriteAllText(Application.persistentDataPath + m_persistentFileName, json);
-    }
-
-    public void LoadBestScore()
-    {
-        if (File.Exists(Application.persistentDataPath + m_persistentFileName))
-        {
-            string json = File.ReadAllText(Application.persistentDataPath + m_persistentFileName);
-            PersistentData data = JsonUtility.FromJson<PersistentData>(json);
-
             BestScore = data.BestScore;
         }
     }
